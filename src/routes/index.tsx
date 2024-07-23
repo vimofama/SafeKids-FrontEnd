@@ -7,5 +7,5 @@ export const useRedirect = routeAction$((_, { redirect }) => {
 
 export default component$(() => {
   const action = useRedirect();
-  return <div></div>;
+  return <div onClick$={() => {action}} ></div>;
 });

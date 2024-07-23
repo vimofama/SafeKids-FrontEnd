@@ -4,7 +4,7 @@ import { Form, routeAction$, zod$, z } from "@builder.io/qwik-city";
 // import Image from "../../../media/logo-safekids.jpg?jsx";
 import Image from "~/media/logo-safekids.jpg?jsx";
 import axios from "axios";
-import { LoginExitResponse, LoginFailResponse } from "~/interfaces";
+import type { LoginExitResponse, LoginFailResponse } from "~/interfaces";
 
 export const useLoginUserAction = routeAction$(
   async (data, { cookie, redirect }) => {
