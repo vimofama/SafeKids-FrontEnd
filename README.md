@@ -1,65 +1,37 @@
-# Qwik City App ⚡️
+# SafeKids
 
-- [Qwik Docs](https://qwik.dev/)
-- [Discord](https://qwik.dev/chat)
-- [Qwik GitHub](https://github.com/QwikDev/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+## Descripción
 
----
+SafeKids es una aplicación diseñada para garantizar la seguridad y el control eficiente de la salida de niños de instituciones educativas o entornos similares. Ofrece opciones para registrar y autorizar la salida de los niños, ya sea mediante códigos QR que contienen datos del padre y la cédula de identidad, o ingresando la cédula en la aplicación para buscar los datos. Los padres pueden mantener una lista de personas autorizadas para retirar al niño y recibir notificaciones en caso de emergencia para aprobar la salida. SafeKids prioriza la seguridad y la privacidad de los datos, asegurando que la salida de los niños se gestione de manera segura y eficiente, brindando tranquilidad a los padres.
 
-## Project Structure
+## Instalación
 
-This project is using Qwik with [QwikCity](https://qwik.dev/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
-
-Inside your project, you'll see the following directory structure:
+Se recomienda utilizar pnpm
 
 ```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
+$ pnpm install o npm install
 ```
 
-- `src/routes`: Provides the directory-based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.dev/qwikcity/routing/overview/) for more info.
+## Ejecución
 
-- `src/components`: Recommended directory for components.
-
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
-
-## Add Integrations and deployment
-
-Use the `pnpm qwik add` command to add additional integrations. Some examples of integrations includes: Cloudflare, Netlify or Express Server, and the [Static Site Generator (SSG)](https://qwik.dev/qwikcity/guides/static-site-generation/).
-
-```shell
-pnpm qwik add # or `pnpm qwik add`
+```
+# desarrollo
+$ pnpm dev o npm run dev
 ```
 
-## Development
+## Páginas
 
-Development mode uses [Vite's development server](https://vitejs.dev/). The `dev` command will server-side render (SSR) the output during development.
-
-```shell
-npm start # or `pnpm start`
-```
-
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
-
-## Preview
-
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.
-
-```shell
-pnpm preview # or `pnpm preview`
-```
-
-## Production
-
-The production build will generate client and server modules by running both client and server build commands. The build command will use Typescript to run a type check on the source code.
-
-```shell
-pnpm build # or `pnpm build`
-```
+| URL                      |
+| ------------------------ |
+| `/login`                 |
+| `/admin/dashboard`       |
+| `/admin/alumno/lista`    |
+| `/admin/alumno/registro` |
+| `/admin/guard/lista`     |
+| `/admin/guard/registro`  |
+| `/admin/tutor/lista`     |
+| `/admin/tutor/registro`  |
+| `/user`                  |
+| `/user/alumno`           |
+| `/user/registro`         |
+| `/user/retirar`          |

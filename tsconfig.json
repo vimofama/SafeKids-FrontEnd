@@ -17,7 +17,9 @@
     "outDir": "tmp",
     "noEmit": true,
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "~/media/*": ["./src/media/*"],
+      "~/interfaces/*": ["./src/interfaces/*"],
     }
   },
   "files": ["./.eslintrc.cjs"],
