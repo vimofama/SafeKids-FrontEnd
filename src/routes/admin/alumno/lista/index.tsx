@@ -5,10 +5,10 @@ import ListaAlumno from "~/components/admin/alumno/lista-alumno";
 import Navbar from "~/components/admin/navbar";
 import { Student } from "~/interfaces";
 
-export const useStudentsData = routeLoader$(async ({ cookie }) => {
+export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
   try {
     const responseCSRF = await axios.get(
-      `http://localhost:3005/users/token-csrf`,
+      `${env.get("API_URL")}/users/token-csrf`,
       {
         headers: {
           Authorization: `Bearer ${cookie.get("jwt")?.value}`,
@@ -20,7 +20,7 @@ export const useStudentsData = routeLoader$(async ({ cookie }) => {
 
     console.log(`CSRF Token: ${dataCSRF.csrfToken}`);
 
-    const response = await axios.get("http://localhost:3005/students", {
+    const response = await axios.get(`${env.get('API_URL')}/students`, {
       maxBodyLength: Infinity,
       headers: {
         "csrf-token": dataCSRF.csrfToken,
