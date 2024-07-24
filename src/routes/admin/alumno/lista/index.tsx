@@ -12,7 +12,9 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
       {
         headers: {
           Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+          Cookie: "_csrf=Y6Ymz8kQxNZ_FDPmYDByGQ",
         },
+        withCredentials: true,
       },
     );
 
@@ -25,7 +27,9 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
       headers: {
         "csrf-token": dataCSRF.csrfToken,
         Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+        Cookie: "_csrf=Y6Ymz8kQxNZ_FDPmYDByGQ",
       },
+      withCredentials: true,
     });
 
     const data: Student[] = response.data;

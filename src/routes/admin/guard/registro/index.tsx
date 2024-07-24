@@ -4,26 +4,23 @@ import axios from "axios";
 import RegisterGuardia from "~/components/admin/guard/register-guardia";
 import Navbar from "~/components/admin/navbar";
 
-export const useRegisterGuardiaAction = routeAction$(
-  async (data, { cookie, redirect }) => {
+export const useValidateForm = routeAction$(
+  async (data, { cookie, env }) => {
     const { nombres, apellidos, ci, celular, email, password, password2 } =
       data;
+
     try {
+      // Validar contraseñás
       if (password !== password2) {
-        throw new Error("Las contraseñas no coinciden");
+        return {
+          success: false,
+          message: "Las contraseñas no coinciden",
+        };
       }
 
-      console.log(`Cookie: ${JSON.stringify(cookie.getAll())}`);
-
-      const jwt = cookie.get("jwt");
-
-      if (!jwt) {
-        console.log(`No JWT found in cookies`);
-        return redirect(302, "/login");
-      }
-
-      const guardResponse = await axios.post(
-        "http://localhost:3005/users/register",
+      // Crear usuario
+      await axios.post(
+        `${env.get("API_URL")}/users/register`,
         {
           fullName: `${nombres} ${apellidos}`,
           ci,
@@ -32,25 +29,26 @@ export const useRegisterGuardiaAction = routeAction$(
           password,
           userRole: "Personal de seguridad",
         },
-        { headers: { Authorization: `Bearer ${jwt.value}` } },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+            Cookie: "_csrf=Y6Ymz8kQxNZ_FDPmYDByGQ",
+          },
+          withCredentials: true,
+        },
       );
-
-      console.log(`Guard response: ${guardResponse}`);
-
-      if (guardResponse.status === 201) {
-        return redirect(302, "/admin/dashboard");
-      }
 
       return {
         success: true,
-        message: "Guardia registrado exitosamente",
+        message: "Usuario creado exitosamente",
       };
     } catch (error) {
-      console.log(`Error registering guardia: ${error}`);
-      return {
-        success: false,
-        message: JSON.stringify(error),
-      };
+      if (error instanceof Error) {
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
     }
   },
   zod$({
@@ -63,10 +61,18 @@ export const useRegisterGuardiaAction = routeAction$(
     email: z.string().email("Formato no valido"),
     password: z
       .string()
-      .min(8, "La contraseña debe tener al menos 8 caracteres"),
+      .min(8, "La contraseña debe tener al menos 8 caracteres")
+      .regex(
+        /^(?=.*\d)(?=.*\W)(?=.*[A-Z])(?=.*[a-z])[^\n]*$/,
+        "La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un caracter especial",
+      ),
     password2: z
       .string()
-      .min(8, "La contraseña debe tener al menos 8 caracteres"),
+      .min(8, "La contraseña debe tener al menos 8 caracteres")
+      .regex(
+        /^(?=.*\d)(?=.*\W)(?=.*[A-Z])(?=.*[a-z])[^\n]*$/,
+        "La contraseña debe tener al menos una letra mayúscula, una minúscula, un número y un caracter especial",
+      ),
   }),
 );
 
