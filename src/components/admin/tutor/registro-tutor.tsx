@@ -1,10 +1,10 @@
 import { component$ } from "@builder.io/qwik";
-import { Form } from "@builder.io/qwik-city";
+import { Form, Link } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (
     <Form
-      class="inline-flex w-[1440px] flex-col items-center justify-center gap-[33px] px-[180px]"
+      class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]"
     >
       <h1 class="text-[28px] font-semibold capitalize text-black">
         Registro de tutor
@@ -123,14 +123,14 @@ export default component$(() => {
             Registrar
           </div>
         </button>
-        <a
-          href="/admin"
+        <Link
+          href="/admin/dashboard/"
           class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
         >
           <div class="text-[28px] font-semibold capitalize text-white">
             Cancelar
           </div>
-        </a>
+        </Link>
       </div>
     </Form>
   );

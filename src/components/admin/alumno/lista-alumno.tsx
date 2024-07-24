@@ -1,65 +1,12 @@
 import { component$ } from "@builder.io/qwik";
-
-const alumnos = [
-  {
-    id: "1",
-    nombre: "Ana Pérez",
-    cedular: "0987654321",
-    cedulaPadre: "12345678",
-  },
-  {
-    id: "2",
-    nombre: "Carlos Sánchez",
-    cedular: "0987654322",
-    cedulaPadre: "23456789",
-  },
-  {
-    id: "3",
-    nombre: "María Gómez",
-    cedular: "0987654323",
-    cedulaPadre: "34567890",
-  },
-  {
-    id: "4",
-    nombre: "Luis Díaz",
-    cedular: "0987654324",
-    cedulaPadre: "45678901",
-  },
-  {
-    id: "5",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-  },
-  {
-    id: "6",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-  },
-  {
-    id: "7",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-  },
-  {
-    id: "8",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-  },
-  {
-    id: "9",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-  },
-];
+import { useStudentsData } from "~/routes/admin/alumno/lista";
 
 export default component$(() => {
+
+  const alumnos = useStudentsData();
+
   return (
-    <main class="mt-10 flex w-[1440px] flex-col gap-6 px-[180px]">
+    <main class="mt-10 flex w-full flex-col gap-6 px-[180px]">
       <h1 class="text-center text-4xl font-normal text-black">
         Lista de Alumnos
       </h1>
@@ -78,7 +25,7 @@ export default component$(() => {
                 Nombre
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Celular
+                Cédula
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 Cédula Padre
@@ -89,19 +36,19 @@ export default component$(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            {alumnos.length === 0 ? (
+            {alumnos.value.length === 0 ? (
               <tr>
                 <td class="px-6 py-4 text-center text-gray-500" colSpan={4}>
                   No hay alumnos disponibles
                 </td>
               </tr>
             ) : (
-              alumnos.map((alumno) => (
+              alumnos.value.map((alumno) => (
                 <tr key={alumno.id}>
-                  <td class="whitespace-nowrap px-6 py-4">{alumno.nombre}</td>
-                  <td class="whitespace-nowrap px-6 py-4">{alumno.cedular}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{alumno.fullName}</td>
+                  <td class="whitespace-nowrap px-6 py-4">{alumno.ci}</td>
                   <td class="whitespace-nowrap px-6 py-4">
-                    {alumno.cedulaPadre}
+                    {alumno.guardian.ci}
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
                     <div class="flex space-x-4">

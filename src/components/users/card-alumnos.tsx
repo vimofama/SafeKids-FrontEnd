@@ -1,8 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 
 import Usuario from "./icons/usuario.svg";
-import Pencil from "./icons/pencil.svg";
-import Trash from "./icons/trash.svg";
 
 export interface CardAlumnosProps {
   nombre: string;
@@ -19,12 +17,6 @@ export default component$(({ nombre, ci }: CardAlumnosProps) => {
         <p class="text-sm font-normal text-black">{nombre}</p>
         <p class="self-stretch text-sm font-normal text-black">{ci}</p>
       </div>
-      <button class="relative h-8 w-8">
-        <img src={Pencil} width={32} height={32} alt="lapiz" />
-      </button>
-      <button class="relative h-8 w-8">
-        <img src={Trash} width={32} height={32} alt="basurero" />
-      </button>
     </div>
   );
 });

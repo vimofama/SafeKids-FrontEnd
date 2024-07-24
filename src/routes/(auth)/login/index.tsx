@@ -1,34 +1,38 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
 import { Form, routeAction$, zod$, z } from "@builder.io/qwik-city";
 
-// import Image from "../../../media/logo-safekids.jpg?jsx";
 import Image from "~/media/logo-safekids.jpg?jsx";
 import axios from "axios";
 import type { LoginExitResponse, LoginFailResponse } from "~/interfaces";
 
 export const useLoginUserAction = routeAction$(
-  async (data, { cookie, redirect }) => {
+  async (data, { cookie, redirect, env }) => {
     const { email, password } = data;
 
     try {
-      const response = await axios.post("http://localhost:3005/users/login", {
+      const response = await axios.post(`${env.get('API_URL')}/users/login`, {
         email,
         password,
       });
 
       const data: LoginExitResponse = response.data;
-      cookie.set("jwt", data.jwt);
 
       if (data.userRole === "Administrador") {
+        cookie.set("jwt", data.jwt, { path: "/admin" });
         redirect(302, "/admin/dashboard");
       }
-
+      
       if (data.userRole === "Tutor") {
+        cookie.set("jwt", data.jwt, { path: "/user" });
         redirect(302, "/user");
+      }
+      
+      if (data.userRole === "Personal de seguridad") {
+        cookie.set("jwt", data.jwt, { path: "/guard" });
+        redirect(302, "/guard");
       }
 
       return { success: true }; // Retorna éxito si todo va bien
-
     } catch (error: any) {
       const data: LoginFailResponse = error.response.data;
       return {
@@ -36,7 +40,6 @@ export const useLoginUserAction = routeAction$(
         message: data.message,
       };
     }
-
   },
   zod$({
     email: z.string().email("Formato no valido"),
@@ -47,6 +50,10 @@ export const useLoginUserAction = routeAction$(
 );
 
 export default component$(() => {
+  // useVisibleTask$(() => {
+  //   document.cookie = "jwt; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+  // });
+
   const action = useLoginUserAction();
 
   return (
@@ -58,7 +65,7 @@ export default component$(() => {
           </h1>
 
           <div class="inline-flex h-32 w-32 items-center justify-center">
-            <Image style={{ width: "128px", height: "128px" }} loading="lazy"/>
+            <Image style={{ width: "128px", height: "128px" }} loading="lazy" />
           </div>
 
           <label
@@ -100,7 +107,10 @@ export default component$(() => {
           )}
 
           <div class="inline-flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2">
-            <button class="text-[28px] font-semibold capitalize text-white">
+            <button
+              type="submit"
+              class="text-[28px] font-semibold capitalize text-white"
+            >
               Ingresar
             </button>
           </div>

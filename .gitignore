@@ -4,6 +4,9 @@
 /lib-types
 /server
 
+# Environment
+.env
+
 # Development
 node_modules
 *.local

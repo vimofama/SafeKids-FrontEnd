@@ -1,10 +1,21 @@
 import { component$ } from "@builder.io/qwik";
-import { Form } from "@builder.io/qwik-city";
+import { Form, Link, routeAction$ } from "@builder.io/qwik-city";
+import axios from "axios";
+
+//TODO Implementar accion de registro de alumno
+// export const useRegisterAlumnoAction = routeAction$( async (data, {cookie}) => {
+//   const {nombres, apellidos, ci, ci_tutor} = data;
+//   try {
+//     const guardResponse = await axios.get("http://localhost:3005/users", {headers: {Authorization: `Bearer ${cookie.get("jwt")}`}});
+//   } catch (error) {
+    
+//   }
+// } );
 
 export default component$(() => {
   return (
     <Form
-      class="inline-flex w-[1440px] flex-col items-center justify-center gap-[33px] px-[180px]"
+      class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]"
     >
       <h1 class="text-[28px] font-semibold capitalize text-black">
         Registro de alumno
@@ -56,15 +67,15 @@ export default component$(() => {
       </div>
       <div class="inline-flex w-[610px] items-center justify-between">
         <label
-          for="ci-tutor"
+          for="ci_tutor"
           class="shrink grow basis-0 text-xl font-semibold text-black"
         >
           No. Cédula del Tutor
         </label>
         <input
           type="text"
-          id="ci-tutor"
-          name="ci-tutor"
+          id="ci_tutor"
+          name="ci_tutor"
           placeholder="1899999999"
           class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
         />
@@ -76,14 +87,14 @@ export default component$(() => {
             Registrar
           </div>
         </button>
-        <a
-          href="/admin"
+        <Link
+          href="/admin/dashboard/"
           class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
         >
           <div class="text-[28px] font-semibold capitalize text-white">
             Cancelar
           </div>
-        </a>
+        </Link>
       </div>
     </Form>
   );

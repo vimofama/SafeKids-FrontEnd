@@ -1,15 +1,15 @@
 import { component$ } from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
 
 import ImageTutor from "../../media/tutores.png?jsx";
 import ImageStudent from "../../media/alumnos.png?jsx";
 import ImageGuard from "../../media/guardia.png?jsx";
 
 import Plus from "./icons/plus.svg";
-import { Link } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (
-    <main class="mt-10 inline-flex w-[1440px] items-center justify-between px-[180px]">
+    <main class="mt-10 inline-flex w-full items-center justify-between px-[180px]">
       <div class="inline-flex w-72 flex-col items-center justify-start gap-[11px]">
         <div>
           <div class="self-stretch text-center text-4xl font-normal text-black">

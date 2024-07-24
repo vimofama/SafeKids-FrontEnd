@@ -1,11 +1,13 @@
 import { component$ } from "@builder.io/qwik";
-import { Form } from "@builder.io/qwik-city";
+import { Form, Link } from "@builder.io/qwik-city";
+import { useRegisterGuardiaAction } from "~/routes/admin/guard/registro";
 
 export default component$(() => {
+
+  const action = useRegisterGuardiaAction();
+
   return (
-    <Form
-      class="inline-flex w-[1440px] flex-col items-center justify-center gap-[33px] px-[180px]"
-    >
+    <Form action={action} class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]">
       <h1 class="text-[28px] font-semibold capitalize text-black">
         Registro de personal de seguridad
       </h1>
@@ -115,19 +117,19 @@ export default component$(() => {
         />
       </div>
       <div class="inline-flex items-center justify-start gap-24">
-        <button class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2">
+        <button type="submit" class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2">
           <div class="text-[28px] font-semibold capitalize text-white">
             Registrar
           </div>
         </button>
-        <a
-          href="/admin"
+        <Link
+          href="/admin/dashboard/"
           class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
         >
           <div class="text-[28px] font-semibold capitalize text-white">
             Cancelar
           </div>
-        </a>
+        </Link>
       </div>
     </Form>
   );
