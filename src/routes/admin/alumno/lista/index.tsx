@@ -3,7 +3,7 @@ import { routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import ListaAlumno from "~/components/admin/alumno/lista-alumno";
 import Navbar from "~/components/admin/navbar";
-import { Student } from "~/interfaces";
+import type { Student } from "~/interfaces";
 
 export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
   try {

@@ -3,7 +3,7 @@ import { routeAction$, z, zod$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import Navbar from "~/components/users/navbar";
 import RegistroResponsable from "~/components/users/registro-responsable";
-import { UsersResponse } from "~/interfaces";
+import type { UsersResponse } from "~/interfaces";
 
 export const useCreateAuthorizedPerson = routeAction$(
   async (data, { cookie, env }) => {

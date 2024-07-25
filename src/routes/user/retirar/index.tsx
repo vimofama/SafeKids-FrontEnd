@@ -18,7 +18,7 @@ export const useUserData = routeLoader$(async ({ cookie, env }) => {
       },
     );
 
-    const dataCSRF = responseCSRF.data;
+    // const dataCSRF = responseCSRF.data;
 
     const id = cookie.get("userId")?.value;
 
