@@ -1,8 +1,12 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, Resource, useContext } from "@builder.io/qwik";
 import CardResponsable from "./card-responsable";
 import { Link } from "@builder.io/qwik-city";
+import { useUserData } from "~/routes/user";
+import { UsersResponse } from "~/interfaces";
 
 export default component$(() => {
+  const user = useUserData().value as UsersResponse;
+
   return (
     <div class="inline-flex h-[592px] w-[360px] flex-col items-center justify-center gap-5 px-2">
       <h1 class="self-stretch text-center text-xl font-semibold text-black">
@@ -27,46 +31,16 @@ export default component$(() => {
           Lista Personas Autorizadas
         </h3>
         <div class="overflow-y-scroll">
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
-          <CardResponsable
-            nombre="Nombre Apellido"
-            celular="0999999999"
-            ci="1999999999"
-          />
+          {user.students?.map(({ authorizedPersons }) =>
+            authorizedPersons.map(({ id, fullName, phone, ci }) => (
+              <CardResponsable
+                key={id}
+                nombre={fullName}
+                celular={phone}
+                ci={ci}
+              />
+            )),
+          )}
         </div>
         <Link
           href="/user/registro/"

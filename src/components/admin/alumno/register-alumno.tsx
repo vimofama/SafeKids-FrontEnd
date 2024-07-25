@@ -1,22 +1,9 @@
 import { component$ } from "@builder.io/qwik";
-import { Form, Link, routeAction$ } from "@builder.io/qwik-city";
-import axios from "axios";
-
-//TODO Implementar accion de registro de alumno
-// export const useRegisterAlumnoAction = routeAction$( async (data, {cookie}) => {
-//   const {nombres, apellidos, ci, ci_tutor} = data;
-//   try {
-//     const guardResponse = await axios.get("http://localhost:3005/users", {headers: {Authorization: `Bearer ${cookie.get("jwt")}`}});
-//   } catch (error) {
-    
-//   }
-// } );
+import { Form, Link } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (
-    <Form
-      class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]"
-    >
+    <Form class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]">
       <h1 class="text-[28px] font-semibold capitalize text-black">
         Registro de alumno
       </h1>

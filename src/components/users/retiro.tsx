@@ -1,8 +1,9 @@
 import { component$, useSignal } from "@builder.io/qwik";
+import { AuthorizedPerson, Student } from "~/interfaces";
 
 export interface RetiroProps {
-  alumnos: any[];
-  responsables: any[];
+  alumnos: Student[];
+  responsables: AuthorizedPerson[];
 }
 
 export default component$(({ alumnos, responsables }: RetiroProps) => {
@@ -19,8 +20,8 @@ export default component$(({ alumnos, responsables }: RetiroProps) => {
         <div class="flex items-center justify-between self-stretch rounded-lg border border-black px-[13px] py-2">
           <select class="w-full border-none bg-transparent outline-none">
             <option value="default">Seleccione un alumno</option>
-            {alumnos.map((alumno: any) => (
-              <option key={alumno.id} value={alumno.id}>{alumno.nombre}</option>
+            {alumnos.map((alumno) => (
+              <option key={alumno.id} value={alumno.id}>{alumno.fullName}</option>
             ))}
           </select>
         </div>
@@ -31,8 +32,8 @@ export default component$(({ alumnos, responsables }: RetiroProps) => {
         <div class="flex items-center justify-between self-stretch rounded-lg border border-black px-[13px] py-2">
           <select class="w-full border-none bg-transparent outline-none">
             <option value="default">Seleccione un responsable</option>
-            {responsables.map((responsable: any) => (
-              <option key={responsable.id} value={responsable.id}>{responsable.nombre}</option>
+            {responsables.map((responsable) => (
+              <option key={responsable.id} value={responsable.id}>{responsable.fullName}</option>
             ))}
           </select>
         </div>

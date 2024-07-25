@@ -27,16 +27,13 @@ export default component$(() => {
     <>
       <Form
         action={action}
-        onSubmitCompleted$={async () => {
-
-          console.log(`Action: ${JSON.stringify(action)}`);
-
-          if(action.value?.success === false){
+        onSubmitCompleted$={() => {
+          if (action.value?.success === false) {
             errorFlag.value = true;
-            errorMessage.value = action.value.message
+            errorMessage.value = action.value.message;
           }
 
-          if(action.value?.success === true){
+          if (action.value?.success === true) {
             modalVisible.value = true;
           }
         }}
