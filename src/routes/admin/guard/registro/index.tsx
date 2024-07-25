@@ -10,7 +10,7 @@ export const useValidateForm = routeAction$(
       data;
 
     try {
-      // Validar contraseñás
+      // Validar contraseñas
       if (password !== password2) {
         return {
           success: false,

@@ -1,8 +1,31 @@
 import { component$ } from "@builder.io/qwik";
+import { routeLoader$ } from "@builder.io/qwik-city";
+import axios from "axios";
 import CardAlumnos from "~/components/users/card-alumnos";
 import Navbar from "~/components/users/navbar";
+import { UsersResponse } from "~/interfaces";
+
+export const useUserData = routeLoader$(async ({ cookie, env }) => {
+  try {
+    const id = cookie.get("userId")?.value;
+
+    const response = await axios.get(`${env.get("API_URL")}/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+        Cookie: "_csrf=np4w55lmX81EnE44c53U_g",
+      },
+      withCredentials: true,
+    });
+    const user: UsersResponse = response.data;
+    return user as UsersResponse;
+  } catch (error) {
+    console.log(`Error: ${error}`);
+    return error;
+  }
+});
 
 export default component$(() => {
+  const signal = useUserData().value as UsersResponse;
   return (
     <main class="flex flex-col items-center justify-center">
       <Navbar />
@@ -15,8 +38,9 @@ export default component$(() => {
             Alumnos Registrados
           </h2>
           <div class="overflow-y-scroll">
-            <CardAlumnos nombre="Nombre Apellido" ci="1999999999" />
-            <CardAlumnos nombre="Nombre Apellido" ci="1999999999" />
+            { signal.students?.map( ({id, fullName, ci}) => (
+              <CardAlumnos key={id} nombre={fullName} ci={ci} />
+            ) ) }
           </div>
           <a
             href="/user"

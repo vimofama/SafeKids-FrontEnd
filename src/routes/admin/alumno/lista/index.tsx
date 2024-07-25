@@ -12,7 +12,6 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
       {
         headers: {
           Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-          Cookie: "_csrf=Y6Ymz8kQxNZ_FDPmYDByGQ",
         },
         withCredentials: true,
       },
@@ -20,14 +19,12 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
 
     const dataCSRF = responseCSRF.data;
 
-    console.log(`CSRF Token: ${dataCSRF.csrfToken}`);
-
-    const response = await axios.get(`${env.get('API_URL')}/students`, {
+    const response = await axios.get(`${env.get("API_URL")}/students`, {
       maxBodyLength: Infinity,
       headers: {
         "csrf-token": dataCSRF.csrfToken,
         Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-        Cookie: "_csrf=Y6Ymz8kQxNZ_FDPmYDByGQ",
+        Cookie: responseCSRF.config.headers.Cookie,
       },
       withCredentials: true,
     });
