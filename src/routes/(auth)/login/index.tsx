@@ -149,7 +149,9 @@ export default component$(() => {
             )}
 
             <p
-              onClick$={() => (modalVisible.value = true)}
+              onClick$={() => {
+                showModal();
+              }}
               class="cursor-pointer self-stretch text-right text-xl font-normal text-black hover:underline"
             >
               Recuperar contraseña

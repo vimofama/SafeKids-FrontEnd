@@ -3,16 +3,29 @@ import { routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import Navbar from "~/components/users/navbar";
 import Retiro from "~/components/users/retiro";
-import { AuthorizedPerson, UsersResponse } from "~/interfaces";
+import type { AuthorizedPerson, UsersResponse } from "~/interfaces";
 
 export const useUserData = routeLoader$(async ({ cookie, env }) => {
   try {
+
+    const responseCSRF = await axios.get(
+      `${env.get("API_URL")}/users/token-csrf`,
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+        },
+        withCredentials: true,
+      },
+    );
+
+    const dataCSRF = responseCSRF.data;
+
     const id = cookie.get("userId")?.value;
 
     const response = await axios.get(`${env.get("API_URL")}/users/${id}`, {
       headers: {
         Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-        Cookie: "_csrf=np4w55lmX81EnE44c53U_g",
+        Cookie: responseCSRF.config.headers.Cookie,
       },
       withCredentials: true,
     });
@@ -27,7 +40,7 @@ export const useUserData = routeLoader$(async ({ cookie, env }) => {
 export default component$(() => {
   const signal = useUserData().value as UsersResponse;
   const alumnos = signal.students!;
-  let responsables: AuthorizedPerson[] = [];
+  const responsables: AuthorizedPerson[] = [];
 
   alumnos?.forEach((alumno) => {
     alumno.authorizedPersons.forEach((responsable) => {

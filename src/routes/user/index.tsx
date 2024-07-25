@@ -25,7 +25,7 @@ export const useUserData = routeLoader$(async ({ cookie, env }) => {
 });
 
 export default component$(() => {
-  const signal = useUserData();
+  // const signal = useUserData();
   return (
     <main class="flex flex-col items-center justify-center">
       <Navbar />

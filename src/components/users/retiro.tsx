@@ -1,5 +1,5 @@
 import { component$, useSignal } from "@builder.io/qwik";
-import { AuthorizedPerson, Student } from "~/interfaces";
+import type { AuthorizedPerson, Student } from "~/interfaces";
 
 export interface RetiroProps {
   alumnos: Student[];

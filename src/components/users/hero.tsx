@@ -1,8 +1,8 @@
-import { component$, Resource, useContext } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import CardResponsable from "./card-responsable";
 import { Link } from "@builder.io/qwik-city";
 import { useUserData } from "~/routes/user";
-import { UsersResponse } from "~/interfaces";
+import { type UsersResponse } from "~/interfaces";
 
 export default component$(() => {
   const user = useUserData().value as UsersResponse;

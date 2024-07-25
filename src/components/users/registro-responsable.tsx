@@ -31,7 +31,7 @@ export default component$(() => {
             messageError.value = action.value.message;
           }
           if (action.value?.success == true) {
-            modalVisible.value = true;
+            showModal();
           }
         }}
         class="inline-flex h-[592px] w-[360px] flex-col items-center justify-center gap-[13px]"

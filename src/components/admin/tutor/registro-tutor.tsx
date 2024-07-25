@@ -34,7 +34,7 @@ export default component$(() => {
           }
 
           if (action.value?.success === true) {
-            modalVisible.value = true;
+            showModal();
           }
         }}
         class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]"
