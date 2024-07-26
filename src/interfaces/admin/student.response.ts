@@ -1,12 +1,12 @@
-export interface Student {
+export interface StudenResponse {
   id: string;
   fullName: string;
   ci: string;
   imageURL: string;
-  guardian: UsersResponse;
+  guardian: Guardian;
 }
 
-export interface UsersResponse {
+export interface Guardian {
   id: string;
   email: string;
   password: string;
@@ -15,5 +15,4 @@ export interface UsersResponse {
   phone: string;
   userRole: string;
   imageURL: string;
-  students?: Student[];
 }

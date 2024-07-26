@@ -12,5 +12,6 @@ export interface LoginExitResponse {
     ci:       string;
     phone:    string;
     userRole: string;
+    imageURL: string;
     jwt:      string;
 }
