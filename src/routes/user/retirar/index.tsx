@@ -1,13 +1,12 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import Navbar from "~/components/users/navbar";
 import Retiro from "~/components/users/retiro";
-import type { AuthorizedPerson, UsersResponse } from "~/interfaces";
+import type { PickUpResponse } from "~/interfaces";
 
-export const useUserData = routeLoader$(async ({ cookie, env }) => {
+export const usePickUpsData = routeLoader$(async ({ cookie, env }) => {
   try {
-
     const responseCSRF = await axios.get(
       `${env.get("API_URL")}/users/token-csrf`,
       {
@@ -18,40 +17,44 @@ export const useUserData = routeLoader$(async ({ cookie, env }) => {
       },
     );
 
-    // const dataCSRF = responseCSRF.data;
+    const cookieCSRF = responseCSRF.headers["set-cookie"]?.find(
+      (cookie: string) => cookie.includes("_csrf"),
+    );
+
+    const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
+    const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
 
     const id = cookie.get("userId")?.value;
 
-    const response = await axios.get(`${env.get("API_URL")}/users/${id}`, {
+    const response = await axios.get(`${env.get("API_URL")}/pick-ups`, {
       headers: {
         Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-        Cookie: responseCSRF.config.headers.Cookie,
+        Cookie: `_csrf=${csrfCookie}`,
+        "csrf-token": responseCSRF.data.csrfToken,
       },
       withCredentials: true,
     });
-    const user: UsersResponse = response.data;
-    return user as UsersResponse;
+    const authorizedPersons: PickUpResponse[] = response.data;
+
+    const listaRetiros = authorizedPersons.filter(
+      (pick) => pick.student.guardian.id === id,
+    );
+    return listaRetiros;
   } catch (error) {
-    console.log(`Error: ${error}`);
-    return error;
+    console.log(`Error: ${JSON.stringify(error)}`);
+    return [];
   }
 });
 
 export default component$(() => {
-  const signal = useUserData().value as UsersResponse;
-  const alumnos = signal.students!;
-  const responsables: AuthorizedPerson[] = [];
-
-  alumnos?.forEach((alumno) => {
-    alumno.authorizedPersons.forEach((responsable) => {
-      responsables.push(responsable);
-    });
-  });
-
   return (
     <main class="flex flex-col items-center justify-center">
       <Navbar />
-      <Retiro alumnos={alumnos} responsables={responsables} />
+      <Retiro />
     </main>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Retiros",
+};

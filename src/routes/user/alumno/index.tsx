@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import CardAlumnos from "~/components/users/card-alumnos";
 import Navbar from "~/components/users/navbar";
@@ -7,12 +7,29 @@ import type { UsersResponse } from "~/interfaces";
 
 export const useUserData = routeLoader$(async ({ cookie, env }) => {
   try {
+    const responseCSRF = await axios.get(
+      `${env.get("API_URL")}/users/token-csrf`,
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+        },
+        withCredentials: true,
+      },
+    );
+
+    const cookieCSRF = responseCSRF.headers["set-cookie"]?.find(
+      (cookie: string) => cookie.includes("_csrf"),
+    );
+
+    const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
+    const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
+
     const id = cookie.get("userId")?.value;
 
     const response = await axios.get(`${env.get("API_URL")}/users/${id}`, {
       headers: {
         Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-        Cookie: "_csrf=np4w55lmX81EnE44c53U_g",
+        Cookie: `_csrf=${csrfCookie}`,
       },
       withCredentials: true,
     });
@@ -38,9 +55,14 @@ export default component$(() => {
             Alumnos Registrados
           </h2>
           <div class="overflow-y-scroll">
-            { signal.students?.map( ({id, fullName, ci}) => (
-              <CardAlumnos key={id} nombre={fullName} ci={ci} />
-            ) ) }
+            {signal.students?.map(({ id, fullName, ci, imageURL }) => (
+              <CardAlumnos
+                key={id}
+                nombre={fullName}
+                ci={ci}
+                photo={imageURL}
+              />
+            ))}
           </div>
           <a
             href="/user"
@@ -55,3 +77,7 @@ export default component$(() => {
     </main>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Alumnos",
+};

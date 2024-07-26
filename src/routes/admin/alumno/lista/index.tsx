@@ -1,9 +1,9 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import ListaAlumno from "~/components/admin/alumno/lista-alumno";
 import Navbar from "~/components/admin/navbar";
-import type { Student } from "~/interfaces";
+import type { StudenResponse } from "~/interfaces/admin/student.response";
 
 export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
   try {
@@ -17,6 +17,13 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
       },
     );
 
+    const cookieCSRF = responseCSRF.headers["set-cookie"]?.find(
+      (cookie: string) => cookie.includes("_csrf"),
+    );
+
+    const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
+    const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
+
     const dataCSRF = responseCSRF.data;
 
     const response = await axios.get(`${env.get("API_URL")}/students`, {
@@ -24,14 +31,14 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
       headers: {
         "csrf-token": dataCSRF.csrfToken,
         Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-        Cookie: responseCSRF.config.headers.Cookie,
+        Cookie: `_csrf=${csrfCookie}`,
       },
       withCredentials: true,
     });
 
-    const data: Student[] = response.data;
+    const data: StudenResponse[] = response.data;
 
-    return data as Student[];
+    return data as StudenResponse[];
   } catch (error: any) {
     console.log(`Error: ${error}`);
     return [];
@@ -46,3 +53,7 @@ export default component$(() => {
     </>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Lista de alumnos",
+};

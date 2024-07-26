@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { routeAction$, z, zod$ } from "@builder.io/qwik-city";
+import { DocumentHead, routeAction$, z, zod$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import RegisterGuardia from "~/components/admin/guard/register-guardia";
 import Navbar from "~/components/admin/navbar";
@@ -18,6 +18,23 @@ export const useValidateForm = routeAction$(
         };
       }
 
+      const responseCSRF = await axios.get(
+        `${env.get("API_URL")}/users/token-csrf`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+          },
+          withCredentials: true,
+        },
+      );
+
+      const cookieCSRF = responseCSRF.headers["set-cookie"]?.find(
+        (cookie: string) => cookie.includes("_csrf"),
+      );
+
+      const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
+      const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
+
       // Crear usuario
       await axios.post(
         `${env.get("API_URL")}/users/register`,
@@ -32,7 +49,7 @@ export const useValidateForm = routeAction$(
         {
           headers: {
             Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-            Cookie: "_csrf=Y6Ymz8kQxNZ_FDPmYDByGQ",
+            Cookie: `_csrf=${csrfCookie}`,
           },
           withCredentials: true,
         },
@@ -84,3 +101,7 @@ export default component$(() => {
     </>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Registro de guardia",
+};

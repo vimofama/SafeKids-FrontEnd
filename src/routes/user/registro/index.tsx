@@ -1,9 +1,8 @@
 import { component$ } from "@builder.io/qwik";
-import { routeAction$, z, zod$ } from "@builder.io/qwik-city";
+import { DocumentHead, routeAction$, z, zod$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import Navbar from "~/components/users/navbar";
 import RegistroResponsable from "~/components/users/registro-responsable";
-import type { UsersResponse } from "~/interfaces";
 
 export const useCreateAuthorizedPerson = routeAction$(
   async (data, { cookie, env }) => {
@@ -19,38 +18,32 @@ export const useCreateAuthorizedPerson = routeAction$(
         },
       );
 
-      const dataCSRF = responseCSRF.data;
+      const cookieCSRF = responseCSRF.headers["set-cookie"]?.find(
+        (cookie: string) => cookie.includes("_csrf"),
+      );
+
+      const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
+      const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
 
       const id = cookie.get("userId")?.value;
 
-      const response = await axios.get(`${env.get("API_URL")}/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-          Cookie: responseCSRF.config.headers.Cookie,
+      await axios.post(
+        `${env.get("API_URL")}/authorized-persons`,
+        {
+          fullName: nombres,
+          ci,
+          phone: celular,
+          guardianId: id,
         },
-        withCredentials: true,
-      });
-      const user: UsersResponse = response.data;
-
-      user.students?.forEach(async (student) => {
-        await axios.post(
-          `${env.get("API_URL")}/authorized-persons`,
-          {
-            fullName: nombres,
-            ci,
-            phone: celular,
-            studentId: student.id,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+            "csrf-token": responseCSRF.data.csrfToken,
+            Cookie: `_csrf=${csrfCookie}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-              "csrf-token": dataCSRF.csrfToken,
-              Cookie: responseCSRF.config.headers.Cookie,
-            },
-            withCredentials: true,
-          },
-        );
-      });
+          withCredentials: true,
+        },
+      );
 
       return {
         success: true,
@@ -60,7 +53,7 @@ export const useCreateAuthorizedPerson = routeAction$(
       if (error instanceof Error) {
         return {
           success: false,
-          message: error.message,
+          message: "Error al crear la persona autorizada",
         };
       }
     }
@@ -80,3 +73,7 @@ export default component$(() => {
     </main>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Registro de persona autorizada",
+};

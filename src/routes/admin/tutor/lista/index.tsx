@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import Navbar from "~/components/admin/navbar";
 import ListaTutor from "~/components/admin/tutor/lista-tutor";
@@ -31,3 +31,7 @@ export default component$(() => {
     </>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Lista de tutores",
+};

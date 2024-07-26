@@ -1,12 +1,12 @@
 import { component$ } from "@builder.io/qwik";
 import { DocumentHead, routeAction$, z, zod$ } from "@builder.io/qwik-city";
 import axios from "axios";
-import RegisterAlumno from "~/components/admin/alumno/register-alumno";
-import Navbar from "~/components/admin/navbar";
+import Navbar from "~/components/guard/navbar";
+import RegisterPickup from "~/components/guard/register-pickup";
 
-export const useAlumnoForm = routeAction$(
+export const usePickUpForm = routeAction$(
   async (data, { cookie, env }) => {
-    const { nombres, apellidos, ci, ci_tutor } = data;
+    const { ci_student, ci_tutor } = data;
     try {
       const responseCSRF = await axios.get(
         `${env.get("API_URL")}/users/token-csrf`,
@@ -25,26 +25,46 @@ export const useAlumnoForm = routeAction$(
       const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
       const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
 
-      const responseUser = await axios.get(
-        `${env.get("API_URL")}/users/${ci_tutor}`,
+      // Obtener datos del alumno
+
+      const responseStudent = await axios.get(
+        `${env.get("API_URL")}/students/${ci_student}`,
         {
           headers: {
             Authorization: `Bearer ${cookie.get("jwt")?.value}`,
             Cookie: `_csrf=${csrfCookie}`,
+            "csrf-token": responseCSRF.data.csrfToken,
           },
           withCredentials: true,
         },
       );
 
-      const user = responseUser.data;
+      const student = responseStudent.data;
 
-      // Crear alumno
-      await axios.post(
-        `${env.get("API_URL")}/students`,
+      // Obtener datos de la persona autorizada
+
+      const responseGuardian = await axios.get(
+        `${env.get("API_URL")}/authorized-persons/${ci_tutor}`,
         {
-          fullName: `${nombres} ${apellidos}`,
-          ci,
-          guardianId: user.id,
+          headers: {
+            Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+            Cookie: `_csrf=${csrfCookie}`,
+            "csrf-token": responseCSRF.data.csrfToken,
+          },
+          withCredentials: true,
+        },
+      );
+
+      const guardian = responseGuardian.data;
+
+      // Crear registro de salida
+
+      await axios.post(
+        `${env.get("API_URL")}/pick-ups/`,
+        {
+          timestamp: new Date(),
+          authorizedPersonId: guardian.id,
+          studentId: student.id,
         },
         {
           headers: {
@@ -58,23 +78,20 @@ export const useAlumnoForm = routeAction$(
 
       return {
         success: true,
-        message: "Usuario creado exitosamente",
+        message: "Salida registrada exitosamente",
       };
     } catch (error) {
       if (error instanceof Error) {
+        console.log(`Error: ${JSON.stringify(error)}`);
         return {
           success: false,
-          message: error.message,
+          message: "Error al registrar la salida",
         };
       }
     }
   },
   zod$({
-    nombres: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-    apellidos: z
-      .string()
-      .min(3, "El apellido debe tener al menos 3 caracteres"),
-    ci: z.string().length(10, "La cédula debe tener 10 dígitos"),
+    ci_student: z.string().length(10, "La cédula debe tener 10 dígitos"),
     ci_tutor: z.string().length(10, "La cédula debe tener 10 dígitos"),
   }),
 );
@@ -83,11 +100,11 @@ export default component$(() => {
   return (
     <>
       <Navbar />
-      <RegisterAlumno />
+      <RegisterPickup />
     </>
   );
 });
 
 export const head: DocumentHead = {
-  title: "Registro de alumno",
+  title: "Registro de salida",
 };

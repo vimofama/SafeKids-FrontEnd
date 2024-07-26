@@ -5,12 +5,22 @@ import {
   zod$,
   z,
   useNavigate,
+  globalAction$,
+  DocumentHead,
 } from "@builder.io/qwik-city";
 
 import Image from "~/media/logo-safekids.jpg?jsx";
 import axios from "axios";
 import type { LoginExitResponse, LoginFailResponse } from "~/interfaces";
 import { Modal } from "~/components/shared/modal/modal";
+
+export const useLogOut = globalAction$((_, { cookie }) => {
+  cookie.delete("jwt");
+  cookie.delete("csrf");
+  cookie.delete("userId");
+
+  return;
+});
 
 export const useLoginUserAction = routeAction$(
   async (data, { cookie, env }) => {
@@ -149,9 +159,7 @@ export default component$(() => {
             )}
 
             <p
-              onClick$={() => {
-                showModal();
-              }}
+              onClick$={() => {showModal()}}
               class="cursor-pointer self-stretch text-right text-xl font-normal text-black hover:underline"
             >
               Recuperar contraseña
@@ -182,3 +190,8 @@ export default component$(() => {
     </>
   );
 });
+
+
+export const head: DocumentHead = {
+  title: "Login"
+}
