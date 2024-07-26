@@ -1,10 +1,27 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { useUsersData } from "~/routes/admin/tutor/lista";
 
 export default component$(() => {
-
   const tutores = useUsersData();
+  const filterdTutores = useSignal(tutores.value);
 
+  const query = useSignal("");
+
+  useTask$(({ track }) => {
+    track(() => query.value);
+    track(() => tutores.value);
+
+    const value = query.value;
+
+    if (value === "") {
+      filterdTutores.value = tutores.value;
+    } else {
+      filterdTutores.value = tutores.value.filter((tutor) =>
+        tutor.ci.includes(value),
+      );
+    }
+  });
+  
   return (
     <main class="mt-10 flex w-full flex-col gap-6 px-[180px]">
       <h1 class="text-center text-4xl font-normal text-black">
@@ -13,8 +30,9 @@ export default component$(() => {
 
       <input
         type="text"
-        placeholder="Buscar alumno..."
+        placeholder="Buscar tutor por cédula"
         class="rounded-lg border border-gray-300 px-4 py-2"
+        bind:value={query}
       />
 
       <div class="overflow-x-auto">
@@ -39,18 +57,20 @@ export default component$(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            {tutores.value.length === 0 ? (
+            {filterdTutores.value.length === 0 ? (
               <tr>
                 <td class="px-6 py-4 text-center text-gray-500">
                   No hay tutores disponibles
                 </td>
               </tr>
             ) : (
-              tutores.value.map((tutor) => {
+              filterdTutores.value.map((tutor) => {
                 if (tutor.userRole === "Tutor") {
                   return (
                     <tr key={tutor.id}>
-                      <td class="whitespace-nowrap px-6 py-4">{tutor.fullName}</td>
+                      <td class="whitespace-nowrap px-6 py-4">
+                        {tutor.fullName}
+                      </td>
                       <td class="whitespace-nowrap px-6 py-4">{tutor.email}</td>
                       <td class="whitespace-nowrap px-6 py-4">{tutor.ci}</td>
                       <td class="whitespace-nowrap px-6 py-4">{tutor.phone}</td>

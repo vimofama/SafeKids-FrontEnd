@@ -1,13 +1,19 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { Form, Link, useNavigate } from "@builder.io/qwik-city";
 import { Modal } from "~/components/shared/modal/modal";
-import { useAlumnoForm } from "~/routes/admin/alumno/registro";
+import { useAlumnoUpdate } from "~/routes/admin/alumno/[id]";
 
-export default component$(() => {
+export interface UpdateAlumnoProps {
+  fullName: string;
+  ci: string;
+  ci_tutor: string;
+}
+
+export default component$(({ fullName, ci, ci_tutor }: UpdateAlumnoProps) => {
   const errorFlag = useSignal(false);
   const errorMessage = useSignal("");
 
-  const action = useAlumnoForm();
+  const action = useAlumnoUpdate();
 
   const nav = useNavigate();
 
@@ -20,7 +26,7 @@ export default component$(() => {
 
   const closeModal = $(() => {
     modalVisible.value = false;
-    nav("/admin/dashboard/");
+    nav("/admin/alumno/lista/");
   });
 
   return (
@@ -51,35 +57,16 @@ export default component$(() => {
           </label>
           <input
             type="text"
-            id="nombres"
-            name="nombres"
+            id="fullName"
+            name="fullName"
             placeholder="Primero Segundo"
+            value={fullName}
             class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
           />
         </div>
         {action.value?.failed && (
           <p class="text-sm font-semibold text-red-500">
-            {action.value.fieldErrors.nombres}
-          </p>
-        )}
-        <div class="inline-flex w-[610px] items-center justify-between">
-          <label
-            for="apellidos"
-            class="shrink grow basis-0 text-xl font-semibold text-black"
-          >
-            Apellidos
-          </label>
-          <input
-            type="text"
-            id="apellidos"
-            name="apellidos"
-            placeholder="Primero Segundo"
-            class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
-          />
-        </div>
-        {action.value?.failed && (
-          <p class="text-sm font-semibold text-red-500">
-            {action.value.fieldErrors.apellidos}
+            {action.value.fieldErrors.fullName}
           </p>
         )}
         <div class="inline-flex w-[610px] items-center justify-between">
@@ -94,6 +81,7 @@ export default component$(() => {
             id="ci"
             name="ci"
             placeholder="1999999999"
+            value={ci}
             class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
           />
         </div>
@@ -114,6 +102,7 @@ export default component$(() => {
             id="ci_tutor"
             name="ci_tutor"
             placeholder="1899999999"
+            value={ci_tutor}
             class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
           />
         </div>
@@ -130,11 +119,11 @@ export default component$(() => {
         <div class="inline-flex items-center justify-start gap-24">
           <button class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2">
             <div class="text-[28px] font-semibold capitalize text-white">
-              Registrar
+              Actualizar
             </div>
           </button>
           <Link
-            href="/admin/dashboard/"
+            href="/admin/alumno/lista/"
             class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
           >
             <div class="text-[28px] font-semibold capitalize text-white">
@@ -146,7 +135,7 @@ export default component$(() => {
 
       <Modal showModal={modalVisible.value} closeFn={closeModal}>
         <div q:slot="title">Operación Exitosa</div>
-        <div q:slot="content">Alumno agregado</div>
+        <div q:slot="content">Alumno actualizado</div>
       </Modal>
     </>
   );

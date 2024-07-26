@@ -1,13 +1,13 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { Form, Link, useNavigate } from "@builder.io/qwik-city";
 import { Modal } from "~/components/shared/modal/modal";
-import { useAlumnoForm } from "~/routes/admin/alumno/registro";
+import { usePickUpForm } from "~/routes/guard/registrar";
 
 export default component$(() => {
   const errorFlag = useSignal(false);
   const errorMessage = useSignal("");
 
-  const action = useAlumnoForm();
+  const action = usePickUpForm();
 
   const nav = useNavigate();
 
@@ -40,66 +40,26 @@ export default component$(() => {
         class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]"
       >
         <h1 class="text-[28px] font-semibold capitalize text-black">
-          Registro de alumno
+          Registro de salida
         </h1>
         <div class="inline-flex w-[610px] items-center justify-between">
           <label
-            for="nombres"
+            for="ci_student"
             class="shrink grow basis-0 text-xl font-semibold text-black"
           >
-            Nombres
+            Cédula del Alumno
           </label>
           <input
             type="text"
-            id="nombres"
-            name="nombres"
-            placeholder="Primero Segundo"
-            class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
-          />
-        </div>
-        {action.value?.failed && (
-          <p class="text-sm font-semibold text-red-500">
-            {action.value.fieldErrors.nombres}
-          </p>
-        )}
-        <div class="inline-flex w-[610px] items-center justify-between">
-          <label
-            for="apellidos"
-            class="shrink grow basis-0 text-xl font-semibold text-black"
-          >
-            Apellidos
-          </label>
-          <input
-            type="text"
-            id="apellidos"
-            name="apellidos"
-            placeholder="Primero Segundo"
-            class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
-          />
-        </div>
-        {action.value?.failed && (
-          <p class="text-sm font-semibold text-red-500">
-            {action.value.fieldErrors.apellidos}
-          </p>
-        )}
-        <div class="inline-flex w-[610px] items-center justify-between">
-          <label
-            for="ci"
-            class="shrink grow basis-0 text-xl font-semibold text-black"
-          >
-            No. Cédula
-          </label>
-          <input
-            type="text"
-            id="ci"
-            name="ci"
+            id="ci_student"
+            name="ci_student"
             placeholder="1999999999"
             class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
           />
         </div>
         {action.value?.failed && (
           <p class="text-sm font-semibold text-red-500">
-            {action.value.fieldErrors.ci}
+            {action.value.fieldErrors.ci_student}
           </p>
         )}
         <div class="inline-flex w-[610px] items-center justify-between">
@@ -107,7 +67,7 @@ export default component$(() => {
             for="ci_tutor"
             class="shrink grow basis-0 text-xl font-semibold text-black"
           >
-            No. Cédula del Tutor
+            Cédula de la Persona Autorizada
           </label>
           <input
             type="text"
@@ -134,7 +94,7 @@ export default component$(() => {
             </div>
           </button>
           <Link
-            href="/admin/dashboard/"
+            href="/guard/"
             class="flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
           >
             <div class="text-[28px] font-semibold capitalize text-white">

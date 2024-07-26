@@ -1,9 +1,26 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { useUsersData } from "~/routes/admin/guard/lista"; 
 
 export default component$(() => {
-
   const guardias = useUsersData();
+  const filterdGuardias = useSignal(guardias.value);
+
+  const query = useSignal("");
+
+  useTask$(({track}) => {
+    track(() => query.value);
+    track(() => guardias.value);
+
+    const value = query.value;
+
+    if (value === "") {
+      filterdGuardias.value = guardias.value;
+    } else {
+      filterdGuardias.value = guardias.value.filter((guardia) =>
+        guardia.ci.includes(value),
+      );
+    }
+  });
 
   return (
     <main class="mt-10 flex w-full flex-col gap-6 px-[180px]">
@@ -13,7 +30,7 @@ export default component$(() => {
 
       <input
         type="text"
-        placeholder="Buscar alumno..."
+        placeholder="Buscar guardia por cédula"
         class="rounded-lg border border-gray-300 px-4 py-2"
       />
 
@@ -39,14 +56,14 @@ export default component$(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            {guardias.value.length === 0 ? (
+            {filterdGuardias.value.length === 0 ? (
               <tr>
                 <td class="px-6 py-4 text-center text-gray-500">
                   No hay guardias disponibles
                 </td>
               </tr>
             ) : (
-              guardias.value.map((guardia) => {
+              filterdGuardias.value.map((guardia) => {
                 if (guardia.userRole === "Personal de seguridad") {
                   return (
                     <tr key={guardia.id}>

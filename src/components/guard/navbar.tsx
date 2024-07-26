@@ -22,7 +22,7 @@ export default component$(() => {
           alt="Logo de SafeKids"
         />
       </Link>
-      <h1 class="text-5xl font-bold text-black">Bienvenido, Nombre</h1>
+      <h1 class="text-5xl font-bold text-black">Bienvenido</h1>
       <button
         onClick$={logout}
         class="flex items-center justify-center gap-4 rounded bg-white px-6 py-2"

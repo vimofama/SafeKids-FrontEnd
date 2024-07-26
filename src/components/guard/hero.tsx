@@ -1,82 +1,47 @@
-import { component$ } from "@builder.io/qwik";
-
-const alumnos = [
-  {
-    id: "1",
-    nombre: "Ana Pérez",
-    cedular: "0987654321",
-    cedulaPadre: "12345678",
-    status: true,
-  },
-  {
-    id: "2",
-    nombre: "Carlos Sánchez",
-    cedular: "0987654322",
-    cedulaPadre: "23456789",
-    status: false,
-  },
-  {
-    id: "3",
-    nombre: "María Gómez",
-    cedular: "0987654323",
-    cedulaPadre: "34567890",
-    status: true,
-  },
-  {
-    id: "4",
-    nombre: "Luis Díaz",
-    cedular: "0987654324",
-    cedulaPadre: "45678901",
-    status: false,
-  },
-  {
-    id: "5",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-    status: true,
-  },
-  {
-    id: "6",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-    status: false,
-  },
-  {
-    id: "7",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-    status: true,
-  },
-  {
-    id: "8",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-    status: false,
-  },
-  {
-    id: "9",
-    nombre: "Patricia López",
-    cedular: "0987654325",
-    cedulaPadre: "56789012",
-    status: true,
-  },
-];
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
+import { usePickupData } from "~/routes/guard";
 
 export default component$(() => {
+  const pickupData = usePickupData();
+  const filteredPickupData = useSignal(pickupData.value);
+
+  const query = useSignal("");
+
+  useTask$(({ track }) => {
+    track(() => query.value);
+    track(() => pickupData.value);
+
+    const value = query.value;
+
+    if (value === "") {
+      filteredPickupData.value = pickupData.value;
+    } else {
+      filteredPickupData.value = pickupData.value.filter((data) =>
+        data.student.ci.includes(value),
+      );
+    }
+  });
+
   return (
     <main class="mt-10 flex w-full flex-col gap-6 px-[180px]">
       <h1 class="text-center text-4xl font-normal text-black">
         Lista de Alumnos
       </h1>
 
+    <div class="flex items-center justify-center">
+      <Link href="/guard/registrar/" class="w-48 flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2">
+        <div class="text-lg font-semibold capitalize text-white">
+          Registrar salida
+        </div>
+      </Link>
+    </div>
+
       <input
         type="text"
-        placeholder="Buscar alumno..."
+        placeholder="Buscar alumno por cédula"
         class="rounded-lg border border-gray-300 px-4 py-2"
+        bind:value={query}
       />
 
       <div class="overflow-x-auto overflow-y-auto">
@@ -87,10 +52,10 @@ export default component$(() => {
                 Nombre
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Celular
+                Cédula
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Cédula Padre
+                Cédula Persona Autorizada
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 Estado
@@ -101,27 +66,28 @@ export default component$(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
-            {alumnos.length === 0 ? (
+            {filteredPickupData.value.length === 0 ? (
               <tr>
                 <td class="px-6 py-4 text-center text-gray-500" colSpan={4}>
                   No hay alumnos disponibles
                 </td>
               </tr>
             ) : (
-              //TODO: Ordenar por status, mostrando primero los alumnos no retirados
-              alumnos.map((alumno) => (
-                <tr key={alumno.id}>
-                  <td class="whitespace-nowrap px-6 py-4">{alumno.nombre}</td>
-                  <td class="whitespace-nowrap px-6 py-4">{alumno.cedular}</td>
+              filteredPickupData.value.map((data) => (
+                <tr key={data.id}>
                   <td class="whitespace-nowrap px-6 py-4">
-                    {alumno.cedulaPadre}
+                    {data.student.fullName}
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4">{data.student.ci}</td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    {data.authorizedPerson.ci}
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
-                    {alumno.status ? <p>Retirado</p> : <p>No retirado</p>}
+                    {data.isPickedUp ? <p>Retirado</p> : <p>No retirado</p>}
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
                     <div class="flex space-x-4">
-                      {alumno.status ? (
+                      {data.isPickedUp ? (
                         <button
                           disabled={true}
                           class="flex cursor-not-allowed items-center gap-2 rounded bg-gray-500 px-4 py-2 text-white"

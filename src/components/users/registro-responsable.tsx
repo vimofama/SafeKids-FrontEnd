@@ -90,6 +90,9 @@ export default component$(() => {
             {action.value.fieldErrors.celular}
           </p>
         )}
+        {errorFlag.value && (
+          <p class="text-sm font-semibold text-red-500">{messageError.value}</p>
+        )}
         <div class="inline-flex items-center justify-center gap-8">
           <button
             type="submit"

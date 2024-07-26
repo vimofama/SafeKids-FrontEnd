@@ -1,11 +1,10 @@
 import { component$ } from "@builder.io/qwik";
 import CardResponsable from "./card-responsable";
 import { Link } from "@builder.io/qwik-city";
-import { useUserData } from "~/routes/user";
-import { type UsersResponse } from "~/interfaces";
+import { useAuthorizedData } from "~/routes/user";
 
 export default component$(() => {
-  const user = useUserData().value as UsersResponse;
+  const authoridedPersons = useAuthorizedData().value;
 
   return (
     <div class="inline-flex h-[592px] w-[360px] flex-col items-center justify-center gap-5 px-2">
@@ -16,7 +15,7 @@ export default component$(() => {
         href="/user/retirar"
         class="inline-flex items-center justify-center gap-4 rounded bg-blue-500 px-3 py-1"
       >
-        <p class="text-xl font-semibold capitalize text-white">Retirar</p>
+        <p class="text-xl font-semibold capitalize text-white">Lista de retiros</p>
       </Link>
       <Link
         href="/user/alumno"
@@ -31,16 +30,17 @@ export default component$(() => {
           Lista Personas Autorizadas
         </h3>
         <div class="overflow-y-scroll">
-          {user.students?.map(({ authorizedPersons }) =>
-            authorizedPersons.map(({ id, fullName, phone, ci }) => (
+          {
+            authoridedPersons.map((person) => (
               <CardResponsable
-                key={id}
-                nombre={fullName}
-                celular={phone}
-                ci={ci}
+                key={person.id}
+                nombre={person.fullName}
+                celular={person.phone}
+                ci={person.ci}
+                photo={person.imageURL}
               />
-            )),
-          )}
+            ))
+          }
         </div>
         <Link
           href="/user/registro/"
