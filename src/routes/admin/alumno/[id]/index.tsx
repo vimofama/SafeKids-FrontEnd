@@ -40,7 +40,7 @@ export const useAlumnoUpdate = routeAction$(
 
       const user = responseUser.data;
 
-      // Crear alumno
+      // Actualizar alumno
       await axios.patch(
         `${env.get("API_URL")}/students/${id}`,
         {
