@@ -1,9 +1,9 @@
 import { component$ } from "@builder.io/qwik";
-import { DocumentHead, routeAction$, routeLoader$, z, zod$ } from "@builder.io/qwik-city";
+import { type DocumentHead, routeAction$, routeLoader$, z, zod$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import UpdateAlumno from "~/components/admin/alumno/update-alumno";
 import Navbar from "~/components/admin/navbar";
-import { StudenResponse } from "~/interfaces";
+import type { StudenResponse } from "~/interfaces";
 
 export const useAlumnoUpdate = routeAction$(
   async (data, { cookie, env, params }) => {

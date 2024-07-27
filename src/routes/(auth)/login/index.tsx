@@ -6,7 +6,7 @@ import {
   z,
   useNavigate,
   globalAction$,
-  DocumentHead,
+  type DocumentHead,
 } from "@builder.io/qwik-city";
 
 import Image from "~/media/logo-safekids.jpg?jsx";
@@ -19,7 +19,10 @@ export const useLogOut = globalAction$((_, { cookie }) => {
   cookie.delete("csrf");
   cookie.delete("userId");
 
-  return;
+  return {
+    success: true,
+    message: "Usuario deslogueado exitosamente",
+  };
 });
 
 export const useLoginUserAction = routeAction$(

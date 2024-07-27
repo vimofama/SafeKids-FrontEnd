@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
+import { type DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
 import axios from "axios";
 import CardAlumnos from "~/components/users/card-alumnos";
 import Navbar from "~/components/users/navbar";
