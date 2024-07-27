@@ -15,7 +15,10 @@ export default component$(() => {
 
   return (
     <nav class="inline-flex h-[184px] w-full items-center justify-between px-[180px] py-7">
-      <Link href="/admin/dashboard/" class="flex h-32 w-32 items-center justify-center">
+      <Link
+        href="/admin/dashboard/"
+        class="flex h-32 w-32 items-center justify-center"
+      >
         <ImageLogo
           style={{ width: "128px", height: "128px" }}
           loading="lazy"
@@ -24,7 +27,12 @@ export default component$(() => {
       </Link>
       <h1 class="text-5xl font-bold text-black">Bienvenido</h1>
       <button
-        onClick$={logout}
+        onClick$={async () => {
+          const { value } = await action.submit();
+          if (value.success) {
+            logout();
+          }
+        }}
         class="flex items-center justify-center gap-4 rounded bg-white px-6 py-2"
       >
         <p class="text-[28px] font-semibold capitalize text-black">
