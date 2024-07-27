@@ -22,7 +22,11 @@ export const usePickUpForm = routeAction$(
         (cookie: string) => cookie.includes("_csrf"),
       );
 
-      const csrfCookieMatch = cookieCSRF!!.match(/_csrf=([^;]+)/);
+      if (!cookieCSRF) {
+        throw new Error("No se pudo obtener la cookie CSRF");
+      }
+
+      const csrfCookieMatch = cookieCSRF.match(/_csrf=([^;]+)/);
       const csrfCookie = csrfCookieMatch ? csrfCookieMatch[1] : "";
 
       // Obtener datos del alumno
