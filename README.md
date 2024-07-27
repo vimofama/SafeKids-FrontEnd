@@ -16,6 +16,13 @@ Se recomienda utilizar pnpm
 $ pnpm install o npm install
 ```
 
+## Enviroments
+
+Crear el archivo .evn y agregar la URL del back-end
+```
+API_URL='http://localhost:3005'
+```
+
 ## Ejecución
 
 ```
