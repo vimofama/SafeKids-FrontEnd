@@ -67,7 +67,7 @@ export const useValidateForm = routeAction$(
       if (error instanceof Error) {
         return {
           success: false,
-          message: error.message,
+          message: "Error al crear el usuario, intente nuevamente o contacte al administrador del sistema",
         };
       }
     }

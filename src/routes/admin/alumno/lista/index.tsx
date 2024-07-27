@@ -44,7 +44,6 @@ export const useStudentsData = routeLoader$(async ({ cookie, env }) => {
 
     return data as StudenResponse[];
   } catch (error: any) {
-    console.log(`Error: ${error}`);
     return [];
   }
 });

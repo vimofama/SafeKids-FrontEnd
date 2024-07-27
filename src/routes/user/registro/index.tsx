@@ -57,7 +57,7 @@ export const useCreateAuthorizedPerson = routeAction$(
       if (error instanceof Error) {
         return {
           success: false,
-          message: "Error al crear la persona autorizada",
+          message: "Error al crear la persona autorizada, intente de nuevo o contacte al administrador",
         };
       }
     }

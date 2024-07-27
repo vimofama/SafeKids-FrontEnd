@@ -18,7 +18,6 @@ export const useUsersData = routeLoader$(async ({ cookie, env }) => {
 
     return data as UsersResponse[];
   } catch (error) {
-    console.log(`Error: ${error}`);
     return [];
   }
 });

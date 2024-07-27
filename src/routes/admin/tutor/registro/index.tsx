@@ -54,6 +54,7 @@ export const useTutorForm = routeAction$(
           headers: {
             Authorization: `Bearer ${cookie.get("jwt")?.value}`,
             Cookie: `_csrf=${csrfCookie}`,
+            'csrf-token': responseCSRF.data.csrfToken,
           },
           withCredentials: true,
         },
@@ -67,7 +68,7 @@ export const useTutorForm = routeAction$(
       if (error instanceof Error) {
         return {
           success: false,
-          message: error.message,
+          message: "Error al registrar el tutor, intente nuevamente o contacte al administrador del sistema",
         };
       }
     }

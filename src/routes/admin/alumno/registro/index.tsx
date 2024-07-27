@@ -68,7 +68,7 @@ export const useAlumnoForm = routeAction$(
       if (error instanceof Error) {
         return {
           success: false,
-          message: error.message,
+          message: "Error al crear el alumno, intente nuevamente o contacte al administrador del sistema",
         };
       }
     }

@@ -44,7 +44,6 @@ export const useAuthorizedData = routeLoader$(async ({ cookie, env }) => {
     const user = response.data;
     return user as AuthorizedPersons[];
   } catch (error) {
-    console.log(`Error: ${error}`);
     return [];
   }
 });

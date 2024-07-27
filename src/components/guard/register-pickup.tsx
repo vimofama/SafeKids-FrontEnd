@@ -1,9 +1,12 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { Form, Link, useNavigate } from "@builder.io/qwik-city";
 import { Modal } from "~/components/shared/modal/modal";
-import { usePickUpForm } from "~/routes/guard/registrar";
+import { usePickUpForm, usePickupId } from "~/routes/guard/registrar/[id]";
 
 export default component$(() => {
+
+  const student =  usePickupId();
+
   const errorFlag = useSignal(false);
   const errorMessage = useSignal("");
 
@@ -53,7 +56,8 @@ export default component$(() => {
             type="text"
             id="ci_student"
             name="ci_student"
-            placeholder="1999999999"
+            value={student.value?.ci}
+            readOnly
             class="flex h-10 w-1/2 items-center justify-start gap-2.5 rounded-lg border border-black px-[13px] py-2"
           />
         </div>
@@ -106,7 +110,7 @@ export default component$(() => {
 
       <Modal showModal={modalVisible.value} closeFn={closeModal}>
         <div q:slot="title">Operación Exitosa</div>
-        <div q:slot="content">Alumno agregado</div>
+        <div q:slot="content">Salida registrada</div>
       </Modal>
     </>
   );

@@ -68,10 +68,9 @@ export const useAlumnoUpdate = routeAction$(
       };
     } catch (error) {
       if (error instanceof Error) {
-        console.log(`Error: ${JSON.stringify(error)}`);
         return {
           success: false,
-          message: error.message,
+          message: "Error al actualizar el alumno, intente de nuevo o contacte al administrador",
         };
       }
     }
@@ -124,9 +123,6 @@ export const useAlumnoId = routeLoader$(
       const student: StudenResponse = responseStudent.data;
       return student as StudenResponse;
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(`Error: ${error.message}`);
-      }
       redirect(307, "/admin/alumno/lista");
     }
   },

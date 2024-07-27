@@ -41,11 +41,14 @@ export const usePickUpsData = routeLoader$(async ({ cookie, env }) => {
     const authorizedPersons: PickUpResponse[] = response.data;
 
     const listaRetiros = authorizedPersons.filter(
-      (pick) => pick.student.guardian.id === id,
+      (pick) => {
+        if (pick.authorizedPerson) {
+          return pick.student.guardian.id === id;
+        }
+      }
     );
     return listaRetiros;
   } catch (error) {
-    console.log(`Error: ${JSON.stringify(error)}`);
     return [];
   }
 });

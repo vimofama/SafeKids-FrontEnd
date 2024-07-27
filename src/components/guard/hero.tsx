@@ -29,7 +29,7 @@ export default component$(() => {
         Lista de Alumnos
       </h1>
 
-      <div class="flex items-center justify-center">
+      {/* <div class="flex items-center justify-center">
         <Link
           href="/guard/registrar/"
           class="flex w-48 items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
@@ -38,7 +38,7 @@ export default component$(() => {
             Registrar salida
           </div>
         </Link>
-      </div>
+      </div> */}
 
       <input
         type="text"
@@ -58,17 +58,14 @@ export default component$(() => {
                 Cédula
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Cédula Persona Autorizada
-              </th>
-              <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 Fecha
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 Estado
               </th>
-              {/* <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+              <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                 Acciones
-              </th> */}
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
@@ -86,15 +83,12 @@ export default component$(() => {
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">{data.student.ci}</td>
                   <td class="whitespace-nowrap px-6 py-4">
-                    {data.authorizedPerson.ci}
-                  </td>
-                  <td class="whitespace-nowrap px-6 py-4">
-                    {data.timestamp.toString()}
+                    {data.timestamp ? data.timestamp.toString() : "N/A"}
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
                     {data.isPickedUp ? <p>Retirado</p> : <p>No retirado</p>}
                   </td>
-                  {/* <td class="whitespace-nowrap px-6 py-4">
+                  <td class="whitespace-nowrap px-6 py-4">
                     <div class="flex space-x-4">
                       {data.isPickedUp ? (
                         <button
@@ -104,12 +98,12 @@ export default component$(() => {
                           <div class="text-sm font-semibold">Retirar</div>
                         </button>
                       ) : (
-                        <button class="flex items-center gap-2 rounded bg-blue-500 px-4 py-2 text-white">
+                        <Link href={`/guard/registrar/${data.student.id}/`} class="flex items-center gap-2 rounded bg-blue-500 px-4 py-2 text-white">
                           <div class="text-sm font-semibold">Retirar</div>
-                        </button>
+                        </Link>
                       )}
                     </div>
-                  </td> */}
+                  </td>
                 </tr>
               ))
             )}

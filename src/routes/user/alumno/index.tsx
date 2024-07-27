@@ -5,7 +5,7 @@ import CardAlumnos from "~/components/users/card-alumnos";
 import Navbar from "~/components/users/navbar";
 import type { UsersResponse } from "~/interfaces";
 
-export const useUserData = routeLoader$(async ({ cookie, env }) => {
+export const useUserData = routeLoader$(async ({ cookie, env, redirect }) => {
   try {
     const responseCSRF = await axios.get(
       `${env.get("API_URL")}/users/token-csrf`,
@@ -40,8 +40,7 @@ export const useUserData = routeLoader$(async ({ cookie, env }) => {
     const user: UsersResponse = response.data;
     return user as UsersResponse;
   } catch (error) {
-    console.log(`Error: ${error}`);
-    return error;
+    redirect(302, "/login");
   }
 });
 

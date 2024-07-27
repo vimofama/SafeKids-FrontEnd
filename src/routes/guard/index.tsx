@@ -30,21 +30,23 @@ export const usePickupData = routeLoader$(async ({ cookie, env }) => {
 
     const dataCSRF = responseCSRF.data;
 
-    const response = await axios.get(`${env.get("API_URL")}/pick-ups`, {
-      maxBodyLength: Infinity,
-      headers: {
-        "csrf-token": dataCSRF.csrfToken,
-        Authorization: `Bearer ${cookie.get("jwt")?.value}`,
-        Cookie: `_csrf=${csrfCookie}`,
+    const response = await axios.get(
+      `${env.get("API_URL")}/pick-ups/get-today-pick-ups`,
+      {
+        maxBodyLength: Infinity,
+        headers: {
+          "csrf-token": dataCSRF.csrfToken,
+          Authorization: `Bearer ${cookie.get("jwt")?.value}`,
+          Cookie: `_csrf=${csrfCookie}`,
+        },
+        withCredentials: true,
       },
-      withCredentials: true,
-    });
+    );
 
     const data: PickUpResponse[] = response.data;
     
     return data as PickUpResponse[];
   } catch (error) {
-    console.log(`Error: ${error}`);
     return [];
   }
 });
