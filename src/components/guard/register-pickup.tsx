@@ -20,7 +20,7 @@ export default component$(() => {
 
   const closeModal = $(() => {
     modalVisible.value = false;
-    nav("/admin/dashboard/");
+    nav("/guard");
   });
 
   return (

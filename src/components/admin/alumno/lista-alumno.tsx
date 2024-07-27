@@ -76,7 +76,7 @@ export default component$(() => {
                         href={`/admin/alumno/${alumno.id}`}
                         class="flex items-center gap-2 rounded bg-blue-500 px-4 py-2 text-white"
                       >
-                        <div class="text-sm font-semibold">Actualizar</div>
+                        <div class="text-sm font-semibold">Editar</div>
                       </Link>
                       <button class="cursor-not-allowed flex items-center gap-2 rounded bg-red-500 px-4 py-2 text-white">
                         <div class="text-sm font-semibold">Eliminar</div>

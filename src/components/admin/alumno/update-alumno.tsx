@@ -46,7 +46,7 @@ export default component$(({ fullName, ci, ci_tutor }: UpdateAlumnoProps) => {
         class="inline-flex w-full flex-col items-center justify-center gap-[33px] px-[180px]"
       >
         <h1 class="text-[28px] font-semibold capitalize text-black">
-          Registro de alumno
+          Editar de alumno
         </h1>
         <div class="inline-flex w-[610px] items-center justify-between">
           <label

@@ -25,13 +25,14 @@ export default component$(() => {
   return (
     <main class="mt-10 flex w-full flex-col gap-6 px-[180px]">
       <h1 class="text-center text-4xl font-normal text-black">
-        Lista de Tutores
+        Lista de Personal de Seguridad
       </h1>
 
       <input
         type="text"
         placeholder="Buscar guardia por cédula"
         class="rounded-lg border border-gray-300 px-4 py-2"
+        bind:value={query}
       />
 
       <div class="overflow-x-auto">

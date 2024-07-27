@@ -29,13 +29,16 @@ export default component$(() => {
         Lista de Alumnos
       </h1>
 
-    <div class="flex items-center justify-center">
-      <Link href="/guard/registrar/" class="w-48 flex items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2">
-        <div class="text-lg font-semibold capitalize text-white">
-          Registrar salida
-        </div>
-      </Link>
-    </div>
+      <div class="flex items-center justify-center">
+        <Link
+          href="/guard/registrar/"
+          class="flex w-48 items-center justify-center gap-4 rounded bg-blue-500 px-6 py-2"
+        >
+          <div class="text-lg font-semibold capitalize text-white">
+            Registrar salida
+          </div>
+        </Link>
+      </div>
 
       <input
         type="text"
@@ -58,11 +61,14 @@ export default component$(() => {
                 Cédula Persona Autorizada
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Estado
+                Fecha
               </th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                Acciones
+                Estado
               </th>
+              {/* <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                Acciones
+              </th> */}
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
@@ -83,9 +89,12 @@ export default component$(() => {
                     {data.authorizedPerson.ci}
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
-                    {data.isPickedUp ? <p>Retirado</p> : <p>No retirado</p>}
+                    {data.timestamp.toString()}
                   </td>
                   <td class="whitespace-nowrap px-6 py-4">
+                    {data.isPickedUp ? <p>Retirado</p> : <p>No retirado</p>}
+                  </td>
+                  {/* <td class="whitespace-nowrap px-6 py-4">
                     <div class="flex space-x-4">
                       {data.isPickedUp ? (
                         <button
@@ -100,7 +109,7 @@ export default component$(() => {
                         </button>
                       )}
                     </div>
-                  </td>
+                  </td> */}
                 </tr>
               ))
             )}
