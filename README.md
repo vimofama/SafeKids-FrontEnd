@@ -27,7 +27,7 @@ API_URL='http://localhost:3005'
 
 ```
 # desarrollo
-$ pnpm dev o pnpm dev
+$ pnpm dev o npm run dev
 ```
 
 ## Páginas

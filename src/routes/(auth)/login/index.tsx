@@ -16,7 +16,7 @@ import { Modal } from "~/components/shared/modal/modal";
 
 export const useLogOut = globalAction$((_, { cookie }) => {
   cookie.delete("jwt");
-  cookie.delete("csrf");
+  cookie.delete("_csrf");
   cookie.delete("userId");
 
   return {
